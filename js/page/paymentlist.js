@@ -16,7 +16,7 @@ $(document).ready(function () {
   var user = JSON.parse(localStorage.getItem('User'));
   console.log(user);
   console.log(list1);
-  const requestURL = '/data/promotions';
+  const requestURL = '/data/payment';
   console.log('making ajax request to:', requestURL);
   // From: http://learn.jquery.com/ajax/jquery-ajax-methods/
   // Using the core $.ajax() method since it's the most flexible.
@@ -61,7 +61,6 @@ function updatePage(page) {
       // var page =urlParams.get('page');
       // list1.innerHTML+=`${data[i].productName}|${data[i].productScale} <br>`;
       // Product list
-      
       list1.innerHTML += `
                   <div class="item-product-list">
                   <div class="row">
@@ -69,32 +68,29 @@ function updatePage(page) {
                   <div class="col-md-12 col-sm-8 col-xs-12">
                     <div class="product-info">
                       <h5 class="product-title"><a
-                        href=""><font size="4"><b>CODE : ${dataMem[i].code}</b></font></h5></a>
+                        href=""><font size="4"><b>Customer Number : ${dataMem[i].customerNumber}</b></font></h5></a>
                       <div class="product-price">
                         <!--<ins><span>$360.00</span></ins>-->
                       </div>
                       
                       <div class="col-md-4 col-sm-4 col-xs-12">
-                        <h5>Amount : ${dataMem[i].amount}</h5>
+                        <h5>Check Number : ${dataMem[i].checkNumber}</h5>
                         
                       </div>
                       <div class="col-md-4 col-sm-4 col-xs-12">
-                        
-                      <h5>Expire	: ${dataMem[i].expire.replace("00:00:00.000 +00:00","")} </h5>
+                        <h5>Payment Date : ${dataMem[i].paymentDate}</h5>
                         
                       </div>
                       <div class="product-price">
-                        <ins><span>Discount : $${dataMem[i].discount}</span></ins>
+                        <ins><span>Amount : $${dataMem[i].amount}</span></ins>
                       </div>
                     </div>
                   </div>
                 </div>
                 </div>
-                  <!-- End Item -->`;
-                  
+									<!-- End Item -->`;
     }
   }
- 
   catch (err) { }
   var bar = document.createElement('div');
   bar.className = 'pagi-bar';
@@ -127,7 +123,7 @@ function updatePage(page) {
 function updateFilther(data) {
   dataMem = [];
   for (var i = 0; i < data.length; i++) {
-    if (data[i].code.toUpperCase().search(textSearch.toUpperCase()) != -1) {
+    if (data[i].customerNumber.toUpperCase().search(textSearch.toUpperCase()) != -1) {
       dataMem.push(data[i]);
     }
   };

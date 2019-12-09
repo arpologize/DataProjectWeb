@@ -14,6 +14,7 @@ let pricetext= document.querySelector('.Price');
 let totalpricetext= document.querySelector('.TotalPrice');
 let instocktext= document.querySelector('.InStock');
 let ordertable= document.querySelector('.OrdersTable');
+let preordertable= document.querySelector('.PreOrdersTable');
 let promotionstable= document.querySelector('.PromosTable');
 let cusnametext=document.querySelector('.customerName');
 let promotioninput=document.querySelector('#promotion_code');

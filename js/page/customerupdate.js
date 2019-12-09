@@ -9,6 +9,7 @@ $(document).ready(function () {
           contactFirstName : $('#cfname').val(), 
           contactLastName : $('#clname').val(),
           customerName : $('#cname').val(),
+          point : $('#cpoint').val(),
           addressLine1 : $('#caddr1').val(),
           addressLine2 : $('#caddr2').val(),
           city : $('#city').val(),

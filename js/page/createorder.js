@@ -9,6 +9,7 @@ let pricetext= document.querySelector('.Price');
 let totalpricetext= document.querySelector('.TotalPrice');
 let instocktext= document.querySelector('.InStock');
 let ordertable= document.querySelector('.OrdersTable');
+let preordertable= document.querySelector('.PreOrdersTable');
 let promotionstable= document.querySelector('.PromosTable');
 let cusnametext=document.querySelector('.customerName');
 let promotioninput=document.querySelector('#promotion_code');
@@ -25,6 +26,7 @@ let requiredatetext=document.querySelector('.RequireDate');
 let shipdatetext=document.querySelector('.ShipDate');
 //
 let productAll = [];
+let preordersAll = [];
 let ordersAll = [];
 let promotionsAll = [];
 let orderNumber=0;
@@ -64,6 +66,19 @@ $(document).ready(function () {
       }
       
     });
+
+    $.ajax({
+      // all URLs are relative to http://localhost:3000/
+      url: '/search/preproducts',
+      type: 'GET',
+      dataType: 'json', // this URL returns data in JSON format
+      success: (data) => {
+        // console.log('You received some data!', data);
+        preproductAll = data;
+        console.log(preproductAll);
+      }
+      
+    });
      $.ajax({
       // all URLs are relative to http://localhost:3000/
       url: '/maxOrdersNumber',
@@ -94,11 +109,7 @@ $(document).ready(function () {
       event.preventDefault();
       qtyChange(1);
       qtyinput.innerHTML=parseInt(qtyinput.innerHTML)+1;
-      if(qty> parseInt(instocktext.value))
-      {
-        qty=instocktext.value;
-        qtyinput.innerHTML=instocktext.value;
-      }
+  
 		});
 		$('.qty-down').on('click',function(event){
       event.preventDefault();
@@ -128,7 +139,16 @@ $(document).ready(function () {
           orderLineNumber:0,
           totalPrice:totalpricetext.value
         }
-        ordersAll.push(orderdetail);
+
+        if(instocktext.value>0)
+        {
+          ordersAll.push(orderdetail);
+        }
+        else
+        {
+          orderdetail.priceEach = parseFloat(orderdetail.priceEach*0.5).toFixed(2);
+          preordersAll.push(orderdetail);
+        }
       
         ReProduct();
         nameinput.value="";
@@ -204,6 +224,18 @@ $(document).ready(function () {
             }
             
           });
+          for (var i = 0; i < preordersAll.length; i++) {
+            $.ajax({
+              type: "POST",
+              url: "/create/preorderdetail",
+              data: preordersAll[i],
+              dataType: "json",
+              success: (user)=>{
+                console.log(user);
+              }
+              
+            });
+            }
 
           console.log(promotionsAll);
           for (var i = 0; i < promotionsAll.length; i++) {
@@ -234,6 +266,11 @@ $(document).ready(function () {
             });
           }
         }
+        location.replace(location.origin + `/orderdetails?orderNumber=${orderNumber}`);
+      }
+      else
+      {
+        
       }
     
     });
@@ -278,7 +315,14 @@ $(document).ready(function () {
   function qtyChange(i)
   {
     qty +=i
+    if(instocktext.value >0)
+    {
     totalpricetext.value=(parseFloat(qty )*parseFloat(pricetext.value)).toFixed(2);
+    }
+    else
+    {
+      totalpricetext.value=(parseFloat(qty)*parseFloat(pricetext.value*0.5)).toFixed(2);
+    }
   }
 
   function ReProduct()
@@ -364,6 +408,37 @@ function DeletePromotions(i)
 												</td>
 												<td class="product-subtotal">
 													<span class="amount">${ordersAll[i].totalPrice}</span>
+												</td>
+											</tr>
+      `
+    }
+
+    preordertable.innerHTML="";
+    for (var i = 0; i < preordersAll.length; i++) {
+      subt=parseFloat( subt+preordersAll[i].totalPrice).toFixed(2);
+      preordertable.innerHTML+=
+      `
+      <tr class="cart_item">
+												<td class="product-remove">
+													<a class="remove" href="#"  onclick="DeleteOrder(${i})"><i class="fa fa-times"></i></a>
+												</td>
+												<td class="product-code">
+                        ${preordersAll[i].productCode}
+												</td>
+												<td class="product-name">
+													<a href="#">${preordersAll[i].productName} </a>
+												</td>
+												<td class="product-p">
+													<span class="amount">  ${preordersAll[i].priceEach}</span>
+												</td>
+												<td class="product-quantity">
+
+														<span class="qty-val"> ${preordersAll[i].quantityOrdered}</span>
+													
+													</div>
+												</td>
+												<td class="product-subtotal">
+													<span class="amount">${preordersAll[i].totalPrice}</span>
 												</td>
 											</tr>
       `

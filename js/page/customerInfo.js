@@ -188,24 +188,7 @@ function updatePage(number) {
           </tr>
           <tr>
            <td align="left">
-            <img src="image/ogender.png" alt="" width="55" height="55">
-           </td>
-           <td align="center">
-            <table width="90%">
-             <div class="footer-list-box">
-              <div class="row">
-               <div class="newsletter-form footer-box">
-                 <h2 class="title14">Gender</h2>
-                     <input type="text" value="xxxx">
-               </div>
-              </div>
-             </div>
-            </table>
-           </td>
-          </tr>
-          <tr>
-           <td align="left">
-            <img src="image/opoint.png" alt="" width="65" height="65">
+            <img src="image/points.png" alt="" width="57" height="57">
            </td>
            <td align="center">
             <table width="90%">
@@ -213,7 +196,7 @@ function updatePage(number) {
               <div class="row">
                <div class="newsletter-form footer-box">
                  <h2 class="title14">My Points</h2>
-                     <input type="text" value="xxxxx">
+                     <input type="text" id="cpoint" value="${dataMem[0].point}">
                </div>
               </div>
              </div>
@@ -329,21 +312,34 @@ function updatePage(number) {
        </div>
       </div>
       
-      <table align="center" width='40%'>
-      <tr>
-      <td align="center">
-      <button type="button" class="btn btn-secondary btn-lg btn-block cancle" id = "cancle" style="visibility:hidden; onclick ="">Cancal</button>
-      </td>
-      </tr>
-  </table>
-  <table align="center" width='40%'>
-      <tr>
-      <td align="left">
-      <button type="button" class="btn btn-warning btn-lg btn-block updatevalue" id = "save" style="visibility:hidden; onclick = "">Save</button>
-      </td>
-      </tr>
-      <br>
-  </table>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+											<table align="center" width='50%'>
+												<tr>
+												
+													<td align="right">
+													<br></br>
+														<button type="button"
+															class="btn btn-secondary btn-lg btn-block cancle" id = "cancle" style="visibility:hidden; onclick="cancleclick()">Cancal</button>
+															
+														</td>
+													
+												</tr>
+											</table>
+										</div>
+										<div class="col-md-6 col-sm-6 col-xs-12 ">
+											<table align="center" width='50%'>
+												<tr>
+												
+													<td class= "buttonsave" align="right" >
+													<br></br>
+														<button type="button"
+															class="btn btn-warning btn-lg btn-block updatevalue" id = "save" style="visibility:hidden; onclick="">Save</button>
+															
+													</td>
+													
+												</tr>
+											</table>
+										</div>
      </div>
     </div>
    </div>

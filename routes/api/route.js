@@ -11,6 +11,8 @@ const productlines = require('./tables/productlines');
 const payments = require('./tables/payments');
 const orders = require('./tables/orders');
 const orderdetails = require('./tables/orderdetails');
+const preorders = require('./tables/preOrders');
+const preorderdetails  = require('./tables/preorderdetails');
 const offices = require('./tables/offices');
 const employees = require('./tables/employees');
 const customers = require('./tables/customers');
@@ -65,6 +67,10 @@ router.get('/productslist', (req, res, next) => {
   res.sendFile(path.join(__dirname, `..`, `..`, `ProductLotList.html`), { name: req.user });
   // res.send(result);
 });
+router.get('/paymentlist', (req, res, next) => {
+  res.sendFile(path.join(__dirname, `..`, `..`, `payment.html`), { name: req.user });
+  // res.send(result);
+});
 
 router.get('/search/productlines', (req, res, next) => {
 
@@ -100,6 +106,7 @@ router.get('/search/products', (req, res, next) => {
   //console.log(`${req.params.size}|${req.params.vender}|${req.params.name}`);
   // db.query(`SELECT * FROM products ORDER BY productName,productScale,productVendor `, { type: db.QueryTypes.SELECT})
   products.findAll({
+
     order: [`productName`, `productScale`, `productVendor`]
   })
     .then(result => {
@@ -312,7 +319,7 @@ router.get('/data/customers', (req, res) => {
 });
 router.post('/customer/update/', (req, res, next) => {
   db.query(`update customers set contactFirstName = "${req.body.contactFirstName}",contactLastName = "${req.body.contactLastName}",
-            customerName= "${req.body.customerName}",addressLine1= "${req.body.addressLine1}",addressLine2= "${req.body.addressLine2}"
+            customerName= "${req.body.customerName}",point= "${req.body.point}",addressLine1= "${req.body.addressLine1}",addressLine2= "${req.body.addressLine2}"
             ,city= "${req.body.city}",state= "${req.body.state}",postalCode= "${req.body.postalCode}"
             ,country= "${req.body.country}",creditLimit= "${req.body.creditLimit}",phone= "${req.body.phone}",customerNumber = "${req.body.customerNumbers}"
             where customerNumber = "${req.body.customerNumber}"`, { type: db.QueryTypes.update })
@@ -561,6 +568,9 @@ router.get('/maxOrdersNumber', (req, res, next) => {
     res.send(max);
   });
 });
+
+
+
 router.get('/search/customerorders/number=:number', (req, res, next) => {
   orders.findAll({
 
@@ -873,14 +883,15 @@ router.post('/preorder', (req, res, next) => {
   });
 });
 
-router.post('/preorderdetail', (req, res, next) => {
+router.post('/create/preorderdetail', (req, res, next) => {
   const orderdetail = req.body;
   return preorderdetails.create({
     preOrderNumber: orderdetail.orderNumber,
     productCode: orderdetail.productCode,
     quantityOrdered: orderdetail.quantityOrdered,
     priceEach: orderdetail.priceEach,
-    orderLineNumber: orderdetail.orderLineNumber
+    orderLineNumber: null,
+    status: null
   }).then(function (order) {
     if (order) {
       response.send(order);
@@ -916,4 +927,26 @@ router.get('/search/products/allVendor', (req, res, next) => {
     .catch(next);
 
 });
+
+////////////////////////////payment/////////////////////////////
+router.get('/data/payment', (req, res, next) => {
+  //console.log(`${req.params.size}`);
+  /*
+  ex. not select size and vendor
+  http://localhost:9000/search/products/
+
+  */
+  //console.log(`${req.params.size}|${req.params.vender}|${req.params.name}`);
+  // db.query(`SELECT * FROM products ORDER BY productName,productScale,productVendor `, { type: db.QueryTypes.SELECT})
+  payments.findAll({
+
+    order: [`paymentDate`]
+  })
+    .then(result => {
+      //console.log(result);
+      res.send(result);
+    })
+    .catch(err => { console.log(next); });
+});
+
 module.exports = router;

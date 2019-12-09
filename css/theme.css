@@ -904,7 +904,7 @@ li.menu-item-has-children:hover > .sub-menu {
 .smart-search {
   border-width: 2px;
   border-style: solid;
-  padding-left: 180px;
+  padding-left: 2px;
   position: relative;
   border-radius: 4px;
 }
